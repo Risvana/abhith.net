@@ -21,7 +21,7 @@ The site was configured to use **[Sucuri][3]** firewall but we didn't have acces
 - Enabled all the Diagnostics modules in the **[Everleap][2]** control panel. (HTTP Logging, Detailed Error Logging, Failed Request Tracing).
 
 
-We blocked the CMS access to identify whether the CMS or the site is being compromised. Then the next day evening, the same thing happened. So we concluded that the website is being compromised. Next steps,
+We blocked the CMS access to identify whether the CMS or the site is being compromised. Then the next day evening, the same thing happened. So we concluded that the website is being compromised. Further actions,
 
 - Changed DB password again.
 - Code review
@@ -33,14 +33,14 @@ Code review went okay, the application was built on top of Web forms. And there 
 - Email Subscription
 - Contact form
 
-In which Contact form input didn't touch database since only email alert configured. So for the other two server-side input validation tightened. And we tried some ethical hacking attempts but all of them blocked by **[Sucuri][3]**.
+In which Contact form input didn't touch database since only email alert configured. So for the other two server-side input validation tightened. We also tried some ethical hacking attempts but all of them got blocked by **[Sucuri][3]**.
 
 Checked the site security status in the [Asafaweb](https://asafaweb.com/) and the result screenshot is given below, 
 ![asfaweb-result][4]
-And did the recommended changes for the **Request Validation**. All the updates deployed but in the same evening, it again happened.
+Recommended changes for **Request Validation** were done and all the updates were deployed but on the same evening, it happened again!!
 
 ### Next steps
-Since the project was kind of outdated, the manager asked us to estimate for the project migration into Umbraco since we couldn't find anything suspicious in the coding, YET. So I delegated the estimation task to my colleague and started to look in the HTTP log downloaded from the **[Everleap][2]**. 
+Since the project was kind of outdated, the manager asked us to estimate for the project migration into Umbraco since we couldn't find anything suspicious in the coding, YET. So I delegated the estimation task to my colleague and started to have a look in the HTTP log downloaded from the **[Everleap][2]**. 
 
 ### Turning point
 The log file contained 10k+ lines, my first search was for "POST" requests. While navigating through search results I noticed a get request with parameter contains web.config. The log for the same was,
@@ -51,7 +51,7 @@ The log file contained 10k+ lines, my first search was for "POST" requests. Whil
 
 The above request was handled by the PDF download handler module, its intended function was to provide the requested PDF file. 
 
-So I checked the request handler and its code given below,
+So I checked the request handler and here is the code,
 
 <pre style="font-family:Fantasque Sans Mono;font-size:13;color:gainsboro;background:#1e1e1e;"><span style="color:#569cd6;">protected</span>&nbsp;<span style="color:#569cd6;">void</span>&nbsp;<span style="color:cyan;">Page_Load</span>(<span style="color:#569cd6;">object</span>&nbsp;sender,&nbsp;<span style="color:lightblue;">EventArgs</span>&nbsp;e)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{
