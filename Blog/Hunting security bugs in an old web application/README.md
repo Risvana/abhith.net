@@ -5,23 +5,23 @@ Security, Bug, Code-Review
 ### Categories
 ASP.NET 
 ### Excerpt
-In this post, I am sharing one of my security bug hunting experience in an older ASP.NET web form project.
+In this post, I am sharing one of my security bug hunting experience in an older ASP.NET web form project. 
 ### Published Date
 2017-10-09 09:36:25
 ## Content
 ### Markdown
 Recently one of our old (~4 years or so) website faced a big security challenge. A similar situation we faced for the same website a long time ago when it initially deployed to the production server, that time the site was hosted in **[GoDaddy][1]**. Due to that incident, we moved the site to a custom VPS server with a third party company (where I worked during that time) and everything was fine after that.
 
-This year we moved the website to **[Everleap][2]** and then recently the same problem happened, but after it happened, we brought the site back online within 5 minutes. Scheduled database backups and file backup were configured for the same which we do for all the sites we manage. **[Everleap][2]** have a cloud backup service which will take care of the periodic backup of files as well as the databases.
+This year we moved the website to **[Everleap][2]** and then recently the same problem happened, but after it happened, we brought the site back online within 5 minutes with the help of Scheduled database backups and file backup that were configured for the same (which we do for all the sites we manage). **[Everleap][2]** have a cloud backup service which will take care of the periodic backup of files as well as the databases.
 
-The site was configured to use **[Sucuri][3]** firewall but we didn't have access to its portal, the client had. And IP security was enabled for the site so that only **[Sucuri][3]** IP's are allowed to access the site. And the site content was managed by a custom CMS built by us in the old days, which hosted in a separate domain. After the issue stricken, we did couple of things,
+The site was configured to use **[Sucuri][3]** firewall but the portal's access was restricted only to the client. And IP security was enabled for the site, so that only **[Sucuri][3]** IP's are allowed to access the site. The site content was managed by a custom CMS built by us in the old days, which hosted in a separate domain. After the issue stricken, we did couple of things,
 
 - Changed DB password.
 - Cms access denied.
 - Enabled all the Diagnostics modules in the **[Everleap][2]** control panel. (HTTP Logging, Detailed Error Logging, Failed Request Tracing).
 
 
-We blocked the CMS access to identify whether the CMS or the site is being compromised. Then the next day evening, the same thing happened. So we concluded that the website is being compromised. Next steps,
+We then blocked the CMS access to identify whether the CMS or the site is being compromised. The next day evening, the same thing happened. So we concluded that the website is being compromised. Next steps,
 
 - Changed DB password again.
 - Code review
